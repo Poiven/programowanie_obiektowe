@@ -1,7 +1,7 @@
 import java.text.SimpleDateFormat;  
 import java.util.Date;  
 
-class Main {
+class zestaw1 {
     public static void main(String[] args) {
         System.out.println("Dawid Sztachanski"); 
         //System.out.println("5, 11");
