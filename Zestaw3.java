@@ -130,10 +130,6 @@ public class Zestaw3 {
     public static void dwumianNewtona(int n, int k){
         if(n>k) {
             long wynik = (silnia(n) / (silnia(k) * silnia(n - k)));
-            System.out.println(silnia(14));
-            System.out.println(silnia(2));
-            System.out.println(silnia(14-2));
-            System.out.println(silnia(14)/(2*silnia(12)));
             System.out.println(wynik);
         }
     }
