@@ -1,3 +1,4 @@
+import java.util.Scanner;
 
 public class Zestaw3 {
     public static void main(String[] args) {
@@ -14,6 +15,7 @@ public class Zestaw3 {
 //        System.out.println(NWD(56,98));
 //        ciagFibonacciego(10);
 //        DoskonalaPrint(6);
+//        int[] nowaTablica = wczytajTablice();
 
 
     }
@@ -130,6 +132,10 @@ public class Zestaw3 {
     public static void dwumianNewtona(int n, int k){
         if(n>k) {
             long wynik = (silnia(n) / (silnia(k) * silnia(n - k)));
+            System.out.println(silnia(14));
+            System.out.println(silnia(2));
+            System.out.println(silnia(14-2));
+            System.out.println(silnia(14)/(2*silnia(12)));
             System.out.println(wynik);
         }
     }
@@ -185,6 +191,76 @@ public class Zestaw3 {
         if (czyPalindrom(wyraz))
             System.out.println(wyraz);
     }
+    public static int sumaNaturalnych(int n)
+    {
+        int wynik=0;
+        for(int i=0;i<n;i++)
+        {
+            wynik+=i;
+        }
+        return wynik;
+    }
+    public static int sumaParzystych(int n)
+    {
+        int wynik=0;
+        for(int i=0;i<n;i++)
+        {
+            wynik += 2*i;
+        }
+        return wynik;
+    }
+    public static int sumaNieparzystych(int n)
+    {
+        int wynik=0;
+        for(int i=0;i<n;i++)
+        {
+            wynik += 2*i;
+        }
+        return wynik;
+    }
+    public static int sumaKwaNaturalnych(int n)
+    {
+        int wynik=0;
+        for(int i=0;i<n;i++)
+        {
+            wynik += i*i;
+        }
+        return wynik;
+    }
+    public static int sumaSzeNaturalnych(int n)
+    {
+        int wynik=0;
+        for(int i=0;i<n;i++)
+        {
+            wynik += i*i*i;
+        }
+        return wynik;
+    }
+    public static int sumaOdwNaturalnych(int n)
+    {
+        int wynik=0;
+        for(int i=0;i<n;i++)
+        {
+            if (i!=0)
+                wynik += 1/i;
+        }
+        return wynik;
+    }
+    public static int[] wczytajTablice() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Podaj liczbę n: ");
+        int n = scanner.nextInt();
+
+        int[] tablica = new int[n];
+        for (int i = 0; i < n; i++) {
+            tablica[i] = scanner.nextInt();
+        }
+
+        return tablica;
+    }
+
+
+
 
 
 
