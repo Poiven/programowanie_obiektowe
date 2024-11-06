@@ -8,7 +8,7 @@ public class Zestaw3 {
 //        liczbyPierwsze(20);
 //        liczbyPodzielne(4,5);
 //        System.out.println(silnia(0));
-//        piramida(5,1);
+//        piramida(5,0);
 //        System.out.println(silniaPodwojna(10));
 //        System.out.println(silniaM(1,10));
 //        dwumianNewtona(14,5);
@@ -16,6 +16,9 @@ public class Zestaw3 {
 //        ciagFibonacciego(10);
 //        DoskonalaPrint(6);
 //        int[] nowaTablica = wczytajTablice();
+//        int[] n = {1,2,4};
+//        printSubsets(n);
+//        TrojkatPascala(5);
 
 
     }
@@ -127,18 +130,51 @@ public class Zestaw3 {
                 System.out.println();
             }
         }
+        else if (variant == 0)
+        {
+            for (int i = 0; i < n; i++) {
+                // Wypisanie odpowiedniej liczby spacji dla wyrównania trójkąta
+                for (int j = 0; j < n - i - 1; j++) {
+                    System.out.print(" ");
+                }
+                for (int j = 0; j <= i; j++) {
+                    System.out.print("*" + " ");
+                }
+                System.out.println();
+            }
+        }
+        else
+            return;
     }
 
-    public static void dwumianNewtona(int n, int k){
-        if(n>k) {
+    public static void dwumianNewtonaPrint(int n, int k){
+        if(n >= k) {
             long wynik = (silnia(n) / (silnia(k) * silnia(n - k)));
-            System.out.println(silnia(14));
-            System.out.println(silnia(2));
-            System.out.println(silnia(14-2));
-            System.out.println(silnia(14)/(2*silnia(12)));
             System.out.println(wynik);
         }
     }
+
+    public static long dwumianNewtona(int n, int k) {
+        if (n >= k) {
+            return silnia(n) / (silnia(k) * silnia(n - k));
+        }
+        return 0;
+    }
+
+    public static void TrojkatPascala(int n) {
+        for (int i = 0; i < n; i++) {
+            // Wypisanie odpowiedniej liczby spacji dla wyrównania trójkąta
+            for (int j = 0; j < n - i - 1; j++) {
+                System.out.print(" ");
+            }
+            for (int j = 0; j <= i; j++) {
+                System.out.print(dwumianNewtona(i, j) + " ");
+            }
+            System.out.println();
+        }
+    }
+
+
     public static int NWD(int a, int b) {
         while (b != 0) {
             int temp = b;
@@ -258,6 +294,26 @@ public class Zestaw3 {
 
         return tablica;
     }
+    public static void printSubsets(int[] array) {
+        int n = array.length;
+        int totalSubsets = (int) Math.pow(2, n); // 2^n
+
+        for (int i = 0; i < totalSubsets; i++) {
+            System.out.print("{ ");
+            for (int j = 0; j < n; j++) {
+                if (czyBit(i, j)) {
+                    System.out.print(array[j] + " ");
+                }
+            }
+            System.out.println("}");
+        }
+    }
+
+    private static boolean czyBit(int num, int bit) {
+        return (num / (int) Math.pow(2, bit)) % 2 == 1;
+    }
+
+
 
 
 
