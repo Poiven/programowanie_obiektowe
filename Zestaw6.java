@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Collection;
 
 class Produkt{
     String nazwa;
@@ -25,7 +26,7 @@ class Produkt{
 }
 
 class KoszykZakupowy{
-    ArrayList<Produkt> listaProduktow;
+    public ArrayList<Produkt> listaProduktow;
     KoszykZakupowy(){
         listaProduktow=new ArrayList<Produkt>();
 
@@ -40,7 +41,6 @@ class KoszykZakupowy{
     }
     public void wyswietlZawartoscKoszyka(){
         ArrayList<Produkt> widziane = new ArrayList<>();
-        int count=0;
         for(Produkt item:listaProduktow){
             if(!widziane.contains(item)){
                 widziane.add(item);
@@ -70,8 +70,10 @@ class KoszykZakupowy{
 }
 
 class Zamowienie{
-    KoszykZakupowy koszykZakupowy;
+    public KoszykZakupowy koszykZakupowy;
     private String statusZamowienia;
+    public Platnosc platnosc;
+
 
     public String getStatusZamowienia() {
         return statusZamowienia;
@@ -80,6 +82,7 @@ class Zamowienie{
     Zamowienie(KoszykZakupowy koszykZakupowy,String statusZamowienia){
         this.koszykZakupowy=koszykZakupowy;
         this.statusZamowienia=statusZamowienia;
+        this.platnosc = new Platnosc(this.koszykZakupowy.obliczCalkowitaWartosc(), "nieoplacone");
     }
     public void ustawStatusZamowienia(String status){
         this.statusZamowienia=status;
@@ -89,6 +92,19 @@ class Zamowienie{
         koszykZakupowy.wyswietlZawartoscKoszyka();
         System.out.println("Status: "+statusZamowienia);
     }
+    public void finalizujZamowienie(){
+        if (platnosc.statusPlatnosci.equals("oplacone"))
+            this.ustawStatusZamowienia("Gotowe do wysylki");
+
+    }
+    public void zwrocProdukt(Produkt produkt, int ilosc){
+        for (int i=0;i<ilosc;i++) {
+            this.koszykZakupowy.listaProduktow.remove(produkt);
+
+        }
+        produkt.iloscNaMagazynie += ilosc;
+    }
+
 }
 
 class Klient{
@@ -108,8 +124,9 @@ class Klient{
 
     public void wyswietlHistorieZamowien(){
         for(int i = 0; i<listaZamowien.size(); i++){
-            System.out.println("Zamowienie "+ (i+1) +" :");
+            System.out.println("{\nZamowienie "+ (i+1) +" :");
             listaZamowien.get(i).wyswietlZamowienie();
+            System.out.println("}");
         }
     }
     public double obliczLacznyKosztZamowien(){
@@ -147,17 +164,32 @@ class Sklep{
     }
     public void zakupy(Produkt singleProduct, Klient osoba, int ilosc){
         if (singleProduct.iloscNaMagazynie>=ilosc){
-//            osoba.listaZamowien.add();
+            osoba.listaZamowien.getLast().koszykZakupowy.dodajProdukt(singleProduct, ilosc);
         }
+
     }
 
 
 }
 
+class Platnosc{
+    double kwota;
+    String statusPlatnosci;
+
+    Platnosc(double sum, String tekst){
+        this.kwota = sum;
+        this.statusPlatnosci = tekst;
+    }
+    public void zaplac(){
+        this.statusPlatnosci = "oplacone";
+        this.kwota = 0;
+    }
+}
+
 
 public class Zestaw6 {
     public static void main(String[] args) {
-        var monitor = new Produkt("monitor",12.50,3);
+        var monitor = new Produkt("monitor",12.50,20);
         var myszka = new Produkt("myszka",2.50,12);
         // zad 1
         /*
@@ -176,21 +208,32 @@ public class Zestaw6 {
         koszyk.dodajProdukt(monitor,1);
         koszyk.dodajProdukt(myszka,2);
         koszyk.dodajProdukt(monitor,3);
-        koszyk.wyswietlZawartoscKoszyka();
+
+        var koszyk2 = new KoszykZakupowy();
+        koszyk2.dodajProdukt(monitor,5);
+//        koszyk.wyswietlZawartoscKoszyka();
         System.out.println(koszyk.obliczCalkowitaWartosc());
 
         System.out.println();
 
         var order = new Zamowienie(koszyk,"W drodze");
         order.wyswietlZamowienie();
+        System.out.println();
+        var order2 = new Zamowienie(koszyk2,"zagubione");
+
 
         var listaZamowieniowa = new ArrayList<Zamowienie>();
         listaZamowieniowa.add(order);
-        listaZamowieniowa.add(order);
+        listaZamowieniowa.add(order2);
 
 
         var osoba = new Klient("Jan","Kowalski", listaZamowieniowa);
         osoba.wyswietlHistorieZamowien();
         System.out.println(osoba.obliczLacznyKosztZamowien());
+
+//        System.out.println(monitor.iloscNaMagazynie);
+        var sklepik = new Sklep(new ArrayList<Produkt>());
+
     }
+
 }
