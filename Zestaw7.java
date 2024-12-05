@@ -1,6 +1,5 @@
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Objects;
 
@@ -20,23 +19,33 @@ class Produkt{
     }
 
     public void setNazwa(String nazwa) {
-        this.nazwa = nazwa;
+        if(nazwa!=null)
+            this.nazwa = nazwa;
+        else
+            throw new IllegalArgumentException("nazwa cannot be null");
     }
 
     public double getCena() {
         return cena;
     }
 
-    public void setCena(double cena) {
-        this.cena = cena;
+    public void setCena(Double cena) {
+        if (cena!=null)
+            this.cena = cena;
+        else
+            throw new IllegalArgumentException("cena cannot be null");
     }
 
     public int getIloscNaMagazynie() {
         return iloscNaMagazynie;
     }
 
-    public void setIloscNaMagazynie(int iloscNaMagazynie) {
-        this.iloscNaMagazynie = iloscNaMagazynie;
+    public void setIloscNaMagazynie(Integer iloscNaMagazynie) {
+        if(iloscNaMagazynie!=null)
+            this.iloscNaMagazynie = iloscNaMagazynie;
+        else
+            throw new IllegalArgumentException("ilosc cannot be null");
+
     }
 
     public void wyswietlInformacje(){
@@ -74,14 +83,14 @@ class Produkt{
 }
 
 class KoszykZakupowy{
-    private HashMap<Produkt, Integer> listaProdukt;
+    private HashMap<Produkt, Integer> listaProduktow;
 //    private ArrayList<Produkt> listaProduktow;
     /*KoszykZakupowy(){
         listaProduktow=new ArrayList<Produkt>();
 
     }*/
     KoszykZakupowy(){
-        this.listaProdukt = new HashMap<>();
+        this.listaProduktow = new HashMap<>();
     }
     /*public ArrayList<Produkt> getListaProduktow() {
         return listaProduktow;
@@ -91,31 +100,33 @@ class KoszykZakupowy{
         this.listaProduktow = listaProduktow;
     }*/
 
-    public HashMap<Produkt, Integer> getListaProdukt() {
-        return listaProdukt;
+    public HashMap<Produkt, Integer> getListaProduktow() {
+        return listaProduktow;
     }
 
-    public void setListaProdukt(HashMap<Produkt, Integer> listaProdukt) {
-        this.listaProdukt = listaProdukt;
+    public void setListaProduktow(HashMap<Produkt, Integer> listaProduktow) {
+        if(listaProduktow !=null)
+            this.listaProduktow = listaProduktow;
+        else throw new IllegalArgumentException("listaProduktow cannot be null");
     }
 
     public void dodajProdukt(Produkt item, int ilosc){
         if(item.getIloscNaMagazynie() >ilosc){
-            listaProdukt.put(item,ilosc);
+            listaProduktow.put(item,ilosc);
             item.setIloscNaMagazynie(item.getIloscNaMagazynie()-ilosc);
         }
     }
     public void wyswietlZawartoscKoszyka(){
-        for (Produkt item: listaProdukt.keySet()){
-            System.out.println("przedmiot: "+item.getNazwa()+", ilosc: "+listaProdukt.get(item));
+        for (Produkt item: listaProduktow.keySet()){
+            System.out.println("przedmiot: "+item.getNazwa()+", ilosc: "+ listaProduktow.get(item));
         }
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        for (Produkt item: listaProdukt.keySet()){
-            sb.append("przedmiot: ").append(item.getNazwa()).append(", ilosc: ").append(listaProdukt.get(item)).append("\n");
+        for (Produkt item: listaProduktow.keySet()){
+            sb.append("przedmiot: ").append(item.getNazwa()).append(", ilosc: ").append(listaProduktow.get(item)).append("\n");
         }
         return sb.toString();
     }
@@ -132,7 +143,7 @@ class KoszykZakupowy{
             System.out.println("Nazwa: "+ item.getNazwa() +"\nilosc: "+iloscWKoszyku(item));
         }
     }*/
-    /*private int iloscWKoszyku(Produkt przedmiot){
+    /* private int iloscWKoszyku(Produkt przedmiot){
         int count=0;
         for(Produkt item:listaProduktow){
             if(item.equals(przedmiot))
@@ -142,7 +153,7 @@ class KoszykZakupowy{
     }*/
     public double obliczCalkowitaWartosc(){
         double suma=0;
-        for(Produkt item:listaProdukt.keySet()){
+        for(Produkt item: listaProduktow.keySet()){
             suma+= item.getCena();
         }
         return suma;
@@ -160,11 +171,15 @@ class Zamowienie{
     }
 
     public void setKoszykZakupowy(KoszykZakupowy koszykZakupowy) {
-        this.koszykZakupowy = koszykZakupowy;
+        if(koszykZakupowy!=null)
+            this.koszykZakupowy = koszykZakupowy;
+        else throw new IllegalArgumentException("koszykZakupowy cannot be null");
     }
 
     public void setStatusZamowienia(String statusZamowienia) {
-        this.statusZamowienia = statusZamowienia;
+        if (statusZamowienia!=null)
+            this.statusZamowienia = statusZamowienia;
+        else throw new IllegalArgumentException("statusZamowienia cannot be null");
     }
 
     public Platnosc getPlatnosc() {
@@ -172,7 +187,9 @@ class Zamowienie{
     }
 
     public void setPlatnosc(Platnosc platnosc) {
-        this.platnosc = platnosc;
+        if (platnosc!=null)
+            this.platnosc = platnosc;
+        else throw new IllegalArgumentException("platnosc cannot be null");
     }
 
     public String getStatusZamowienia() {
@@ -199,7 +216,7 @@ class Zamowienie{
     }
     public void zwrocProdukt(Produkt produkt, int ilosc){
         for (int i=0;i<ilosc;i++) {
-            this.koszykZakupowy.getListaProdukt().remove(produkt);
+            this.koszykZakupowy.getListaProduktow().remove(produkt);
 
         }
         produkt.setIloscNaMagazynie(produkt.getIloscNaMagazynie()+ilosc);
@@ -224,7 +241,9 @@ class Klient{
     }
 
     public void setImie(String imie) {
-        this.imie = imie;
+        if(imie!=null)
+            this.imie = imie;
+        else throw new IllegalArgumentException("imie cannot be null");
     }
 
     public String getNazwisko() {
@@ -232,7 +251,9 @@ class Klient{
     }
 
     public void setNazwisko(String nazwisko) {
-        this.nazwisko = nazwisko;
+        if (nazwisko!=null)
+            this.nazwisko = nazwisko;
+        else throw new IllegalArgumentException("nazwisko cannot be null");
     }
 
     public ArrayList<Zamowienie> getListaZamowien() {
@@ -240,7 +261,9 @@ class Klient{
     }
 
     public void setListaZamowien(ArrayList<Zamowienie> listaZamowien) {
-        this.listaZamowien = listaZamowien;
+        if (listaZamowien!=null)
+            this.listaZamowien = listaZamowien;
+        else throw new IllegalArgumentException("listaZamowien cannot be null");
     }
 
     public Adres getAdresKlienta() {
@@ -248,7 +271,9 @@ class Klient{
     }
 
     public void setAdresKlienta(Adres adresKlienta) {
-        this.adresKlienta = adresKlienta;
+        if (adresKlienta!=null)
+            this.adresKlienta = adresKlienta;
+        else throw new IllegalArgumentException("adresKlienta cannot be null");
     }
 
     Klient(String imie, String nazwisko, ArrayList<Zamowienie> listaZamowien, Adres adresKlienta){
@@ -278,7 +303,7 @@ class Klient{
     }
     @Override
     public String toString() {
-        return "imie: "+imie+", nazwisko: "+nazwisko;
+        return "imie: "+imie+", nazwisko: "+nazwisko+", listaZamowien: "+listaZamowien +",adresKlienta: "+adresKlienta;
 
     }
 
@@ -296,7 +321,9 @@ class Sklep{
     }
 
     public void setProdukty(ArrayList<Produkt> produkty) {
-        this.produkty = produkty;
+        if (produkty!=null)
+            this.produkty = produkty;
+        else throw new IllegalArgumentException("produkty cannot be null");
     }
 
     public String getNazwaSklepu() {
@@ -304,7 +331,9 @@ class Sklep{
     }
 
     public void setNazwaSklepu(String nazwaSklepu) {
-        this.nazwaSklepu = nazwaSklepu;
+        if (nazwaSklepu!=null)
+            this.nazwaSklepu = nazwaSklepu;
+        else throw new IllegalArgumentException("nazwaSklepu cannot be null");
     }
 
     public LocalDate getDataPowstania() {
@@ -312,10 +341,12 @@ class Sklep{
     }
 
     public void setDataPowstania(LocalDate dataPowstania) {
-        if (dataPowstania.isBefore(LocalDate.now())) {
-            this.dataPowstania = dataPowstania;
+        if (dataPowstania!=null) {
+            if (dataPowstania.isBefore(LocalDate.now())) {
+                this.dataPowstania = dataPowstania;
+            } else throw new IllegalArgumentException("The given date cannot be in the future");
         }
-        else throw new IllegalArgumentException("The given date cannot be in the future");
+        else throw new IllegalArgumentException("dataPowstania cannot be null");
     }
 
     public Magazyn getMagazynSklepu() {
@@ -323,10 +354,12 @@ class Sklep{
     }
 
     public void setMagazynSklepu(Magazyn magazynSklepu) {
-        this.magazynSklepu = magazynSklepu;
+        if (magazynSklepu!=null)
+            this.magazynSklepu = magazynSklepu;
+        else throw new IllegalArgumentException("magazynSklepu cannot be null");
     }
 
-    Sklep(ArrayList<Produkt> produkty, String nazwaSklepu, LocalDate dataPowstania){
+    public Sklep(ArrayList<Produkt> produkty, String nazwaSklepu, LocalDate dataPowstania){
         if (dataPowstania.isBefore(LocalDate.now())) {
             this.produkty = produkty;
             this.nazwaSklepu = nazwaSklepu;
@@ -369,8 +402,10 @@ class Platnosc{
         return kwota;
     }
 
-    public void setKwota(double kwota) {
-        this.kwota = kwota;
+    public void setKwota(Double kwota) {
+        if (kwota!=null)
+            this.kwota = kwota;
+        else throw new IllegalArgumentException("kwota cannot be null");
     }
 
     public String getStatusPlatnosci() {
@@ -378,7 +413,9 @@ class Platnosc{
     }
 
     public void setStatusPlatnosci(String statusPlatnosci) {
-        this.statusPlatnosci = statusPlatnosci;
+        if (statusPlatnosci!=null)
+            this.statusPlatnosci = statusPlatnosci;
+        else throw new IllegalArgumentException("statusPlatnosci cannot be null");
     }
 
     Platnosc(double sum, String tekst){
@@ -399,7 +436,9 @@ class Magazyn{
     }
 
     public void setProduktyNaMagazynie(HashMap<Produkt, Integer> produktyNaMagazynie) {
-        this.produktyNaMagazynie = produktyNaMagazynie;
+        if (produktyNaMagazynie!=null)
+            this.produktyNaMagazynie = produktyNaMagazynie;
+        else throw new IllegalArgumentException("produktyNaMagazynie cannot be null");
     }
 
     public Magazyn(Produkt p){
@@ -433,7 +472,7 @@ class Adres{
 
     }
 
-    Adres(String ulica, int numerDomu, int numerMieszkania, String miasto, String kodPocztowy) {
+    public Adres(String ulica, int numerDomu, int numerMieszkania, String miasto, String kodPocztowy) {
         this.ulica = ulica;
         this.numerDomu = numerDomu;
         this.numerMieszkania = numerMieszkania;
@@ -446,23 +485,29 @@ class Adres{
     }
 
     public void setUlica(String ulica) {
-        this.ulica = ulica;
+        if(ulica!=null)
+            this.ulica = ulica;
+        else throw new IllegalArgumentException("ulica cannot be null");
     }
 
     public int getNumerDomu() {
         return numerDomu;
     }
 
-    public void setNumerDomu(int numerDomu) {
-        this.numerDomu = numerDomu;
+    public void setNumerDomu(Integer numerDomu) {
+        if (numerDomu!=null)
+            this.numerDomu = numerDomu;
+        else throw new IllegalArgumentException("numerDomu cannot be null");
     }
 
     public int getNumerMieszkania() {
         return numerMieszkania;
     }
 
-    public void setNumerMieszkania(int numerMieszkania) {
-        this.numerMieszkania = numerMieszkania;
+    public void setNumerMieszkania(Integer numerMieszkania) {
+        if(numerMieszkania!=null)
+            this.numerMieszkania = numerMieszkania;
+        else throw new IllegalArgumentException("numerMieszkania cannot be null");
     }
 
     public String getMiasto() {
@@ -470,7 +515,9 @@ class Adres{
     }
 
     public void setMiasto(String miasto) {
-        this.miasto = miasto;
+        if(miasto!=null)
+            this.miasto = miasto;
+        else throw new IllegalArgumentException("miasto cannot be null");
     }
 
     public String getKodPocztowy() {
@@ -478,7 +525,9 @@ class Adres{
     }
 
     public void setKodPocztowy(String kodPocztowy) {
-        this.kodPocztowy = kodPocztowy;
+        if (kodPocztowy!=null)
+            this.kodPocztowy = kodPocztowy;
+        else throw new IllegalArgumentException("kodPocztowy cannot be null");
     }
 
     public void pokaz(){
@@ -489,6 +538,10 @@ class Adres{
     public boolean przed(){
         if
     }*/
+    @Override
+    public String toString(){
+        return kodPocztowy + " " + miasto + "\n" + ulica + " " + numerDomu + " " + numerMieszkania;
+    }
 
 }
 
@@ -543,7 +596,7 @@ public class Zestaw7 {
 
         Magazyn magazynSklepu = new Magazyn(monitor);
         magazynSklepu.dodajProdukt(myszka);
-        System.out.println(magazynSklepu.toString());
+        System.out.println(magazynSklepu);
 
 
 
