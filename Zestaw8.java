@@ -1,3 +1,4 @@
+//import java.lang.classfile.Interfaces;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -5,6 +6,8 @@ import java.util.Objects;
 
 interface ProduktInterface{
     void dodajDoMagazynu(int ilosc);
+    void wyswietlInformacje();
+    void usunZMagazynu(int ilosc);
 }
 
 class Produkt implements ProduktInterface{
@@ -86,7 +89,15 @@ class Produkt implements ProduktInterface{
     }
 }
 
-class KoszykZakupowy{
+interface KoszykZakupowyInterface{
+    void dodajProdukt(Produkt item, int ilosc);
+    void wyswietlZawartoscKoszyka();
+    double obliczCalkowitaWartosc();
+
+}
+
+
+class KoszykZakupowy implements KoszykZakupowyInterface{
     private HashMap<Produkt, Integer> listaProduktow;
 //    private ArrayList<Produkt> listaProduktow;
     /*KoszykZakupowy(){
@@ -165,7 +176,16 @@ class KoszykZakupowy{
 
 }
 
-class Zamowienie{
+interface ZamowienieInterface{
+    public void ustawStatusZamowienia(String status);
+    public void wyswietlZamowienie();
+    public void finalizujZamowienie();
+    public void zwrocProdukt(Produkt produkt, int ilosc);
+
+}
+
+
+class Zamowienie implements ZamowienieInterface{
     private KoszykZakupowy koszykZakupowy;
     private String statusZamowienia;
     private Platnosc platnosc;
@@ -233,8 +253,14 @@ class Zamowienie{
     }
 
 }
+interface KlientInterface{
+    public void dodajZamowienie(Zamowienie singleOrder);
+    public void wyswietlHistorieZamowien();
+    public double obliczLacznyKosztZamowien();
 
-class Klient extends Osoba{
+}
+
+class Klient extends Osoba implements KlientInterface{
 //    private String imie;
 //    private String nazwisko;
     private ArrayList<Zamowienie> listaZamowien;
@@ -313,8 +339,15 @@ class Klient extends Osoba{
     }
 
 }
+interface SklepInterface{
+    void dodajProdukt(Produkt singleProduct);
+    void wyswietlOferty();
+    Produkt wyszukajProduktu(String nazwa);
+    void zakupy(Produkt singleProduct, Klient osoba, int ilosc);
+}
 
-class Sklep{
+
+class Sklep implements SklepInterface{
     private ArrayList<Produkt> produkty;
     private String nazwaSklepu;
     private LocalDate dataPowstania;
@@ -399,7 +432,11 @@ class Sklep{
 
 }
 
-class Platnosc{
+interface PlatnoscInterface{
+    void zaplac();
+}
+
+class Platnosc implements PlatnoscInterface{
     private double kwota;
     private String statusPlatnosci;
 
@@ -433,7 +470,11 @@ class Platnosc{
     }
 }
 
-class Magazyn{
+interface MagazynInterface{
+    void dodajProdukt(Produkt singleProduct);
+}
+
+class Magazyn implements MagazynInterface{
     private HashMap<Produkt, Integer> produktyNaMagazynie = new HashMap<Produkt, Integer>();
 
     public HashMap<Produkt, Integer> getProduktyNaMagazynie() {
@@ -462,7 +503,11 @@ class Magazyn{
         produktyNaMagazynie.put(singleProduct, singleProduct.getIloscNaMagazynie());
     }
 }
-class Adres{
+interface AdresInterface{
+    void pokaz();
+}
+
+class Adres implements AdresInterface{
     private String ulica;
     private int numerDomu;
     private int numerMieszkania;
@@ -549,6 +594,9 @@ class Adres{
     }
 
 }
+/*interface OsobaInterface{
+
+}*/
 
 class Osoba{
     private String imie;
