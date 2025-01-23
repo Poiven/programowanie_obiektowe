@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Objects;
 import java.util.List;
 
 class Box<T>{
@@ -80,10 +79,46 @@ public class Zestaw11 {
     public static <T> boolean isEqual(T objekt1, T objekt2){
         return objekt1.equals(objekt2);
     }
+    // zad 12
+    public static <T> void swap(T[] tablica, int first, int second){
+        if(first<0||second>tablica.length-1)    return;
+        T temp;
+        temp = tablica[first];
+        tablica[first] = tablica[second];
+        tablica[second] = temp;
+    }
+    //zad 14
+    public static <T extends Comparable<T>> T minValue(T[] array) {
+        if (array == null || array.length == 0) {
+            throw new IllegalArgumentException("Tablica nie może być pusta");
+        }
+
+        T min = array[0];
+        for (T element : array) {
+            if (element.compareTo(min) < 0) {
+                min = element;
+            }
+        }
+        return min;
+    }
+
     // zad21
     public static <T extends Animal> T findMax(T element1,T element2){
         return element1.compareTo(element2) > 0 ? element1 : element2;
     }
+    // zad 23
+    /*public static <T extends Animal1> T findMax2(T element1, T element2) {
+        // Jeśli element1 jest instancją Dog, porównujemy na podstawie wieku
+        if (element1 instanceof Dog1 && element2 instanceof Dog1) {
+            Dog1 dog1 = (Dog1) element1;
+            Dog1 dog2 = (Dog1) element2;
+            return dog1.getAge() > dog2.getAge() ? dog1 : dog2;
+        }
+        // Jeśli chcielibyśmy porównywać inne typy zwierząt (np. Cat), dodajemy odpowiednią logikę
+        // W tym przykładzie zakładamy, że tylko psy są porównywane, ale można rozszerzyć to o inne klasy.
+        return null;
+    }*/
+
 
     // zad28
     public static <T> void findMinMax(Dog1[] tab, Pair<?super Dog1> result){
